@@ -49,7 +49,7 @@ class ImagineLoader extends Loader
     {
         $requirements = ['_methods' => 'GET', 'filter' => '[A-z0-9_\-]*', 'path' => '.+'];
         $defaults     = ['_controller' => 'imagine.controller:filterAction'];
-        $routeSuffix  = $host ? '_' . preg_replace('#[^a-z0-9]+#i', '_', $host) : '';
+        $routeSuffix  = '_' . preg_replace('#[^a-z0-9]+#i', '_', $host);
 
         $routes->add(
             '_imagine_' . $filter . $routeSuffix,
