@@ -3,6 +3,7 @@
 namespace Avalanche\Bundle\ImagineBundle\Imagine;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Templating\Helper\AssetsHelper;
@@ -19,6 +20,8 @@ class ParamResolver
     private $compiled;
     /** @var AssetsHelper */
     private $assets;
+    /** @var Packages */
+    private $packages;
 
     /** @var string[] */
     private $cachePrefix = [];
@@ -33,21 +36,24 @@ class ParamResolver
     /**
      * Constructs cache path resolver with a given web root and cache prefix
      *
-     * @param array            $hosts
-     * @param Router           $router
-     * @param RequestContext   $context
-     * @param AssetsHelper $assets
+     * @param array          $hosts
+     * @param Router         $router
+     * @param RequestContext $context
+     * @param AssetsHelper   $assets
+     * @param Packages       $packages
      */
     public function __construct(
         array $hosts,
         Router $router,
         RequestContext $context = null,
-        /*AssetsHelper*/ $assets = null
+        /*AssetsHelper*/ $assets = null,
+        /*Packages*/ $packages = null
     ) {
-        $this->hosts   = $hosts;
-        $this->router  = $router;
-        $this->context = $context;
-        $this->assets  = $assets;
+        $this->hosts    = $hosts;
+        $this->router   = $router;
+        $this->context  = $context;
+        $this->assets   = $assets;
+        $this->packages = $packages;
     }
 
     /**
@@ -179,7 +185,9 @@ class ParamResolver
             return $this->assetsHost;
         }
 
-        if ($this->assets) {
+        if ($this->packages) {
+            $host = parse_url($this->packages->getUrl(''), PHP_URL_HOST);
+        } elseif ($this->assets) {
             $host = parse_url($this->assets->getUrl(''), PHP_URL_HOST);
         } elseif ($this->context) {
             $host = $this->context->getHost();
