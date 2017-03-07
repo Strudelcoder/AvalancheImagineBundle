@@ -64,4 +64,9 @@ class CacheReloader
 
         return $paths;
     }
+
+    private function realPath($file)
+    {
+        return 0 !== strpos($file, '/') && stream_is_local($file) ? realpath($file) : $file;
+    }
 }
