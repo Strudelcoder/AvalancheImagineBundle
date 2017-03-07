@@ -21,12 +21,12 @@ class CacheReloader
     {
         $paths = [];
 
-        stream_is_local($file) && ($file = realpath($file));
-        $saveAs && stream_is_local($saveAs) && ($saveAs = realpath(dirname($saveAs)) . '/' . basename($saveAs));
+        $file = $this->realPath($file);
+        $saveAs && ($saveAs = $this->realPath(dirname($saveAs) . '/' . basename($saveAs)));
 
         foreach ($this->filterManager->getFilterNames() as $filter) {
             $prefix = $this->filterManager->getOption($filter, 'source_root', $this->sourceRoot);
-            stream_is_local($prefix) && ($prefix = realpath($prefix));
+            $prefix = $this->realPath($prefix);
 
             if (0 !== strpos($file, $prefix)) {
                 continue;
@@ -49,11 +49,11 @@ class CacheReloader
     {
         $paths = [];
 
-        stream_is_local($file) && ($file = realpath(dirname($file)) . '/' . basename($file));
+        $file = $this->realPath(dirname($file) . '/' . basename($file));
 
         foreach ($this->filterManager->getFilterNames() as $filter) {
             $prefix = $this->filterManager->getOption($filter, 'source_root', $this->sourceRoot);
-            stream_is_local($prefix) && ($prefix = realpath($prefix));
+            $prefix = $this->realPath($prefix);
 
             if (0 !== strpos($file, $prefix)) {
                 continue;
