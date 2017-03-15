@@ -116,13 +116,10 @@ class ParamResolver
         $options = [];
 
         foreach ($this->hosts as $host => $opts) {
-            $options[$host] = $opts['cache_prefix'];
+            $options['default' === $host ? '' : $host] = $opts['cache_prefix'];
         }
-        unset($options['default']);
 
-        if (!array_key_exists($this->getAssetsHost(), $options)) {
-            $options += $this->cachePrefix;
-        }
+        $options += $this->cachePrefix;
 
         return $options;
     }
