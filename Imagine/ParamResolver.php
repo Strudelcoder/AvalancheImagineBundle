@@ -151,7 +151,7 @@ class ParamResolver
                 $this->routeSuffix[$host] = '_' . preg_replace('#[^a-z0-9]+#i', '_', $host);
                 $this->{$field}[$host]    = $this->hosts[$host][$key];
             } elseif (isset($this->hosts['default'][$key])) {
-                $this->routeSuffix[$host] = '_' . preg_replace('#[^a-z0-9]+#i', '_', $host);
+                $this->routeSuffix[$host] = '_';
                 $this->{$field}[$host]    = $this->hosts['default'][$key];
             } else {
                 $message = '%1$s parameter is required by AvalancheImagineBundle; define either imagine.hosts.default.%1$s or imagine.hosts["%2$s"].%1$s';
