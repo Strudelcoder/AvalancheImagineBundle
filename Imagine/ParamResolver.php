@@ -121,7 +121,7 @@ class ParamResolver
         unset($options['default']);
 
         if (!array_key_exists($this->getAssetsHost(), $options)) {
-            $options[''] = $this->cachePrefix;
+            $options += $this->cachePrefix;
         }
 
         return $options;
@@ -154,7 +154,8 @@ class ParamResolver
                 $this->routeSuffix[$host] = '_' . preg_replace('#[^a-z0-9]+#i', '_', $host);
                 $this->{$field}[$host]    = $this->hosts[$host][$key];
             } elseif (isset($this->hosts['default'][$key])) {
-                $this->{$field}[$host] = $this->hosts['default'][$key];
+                $this->routeSuffix[$host] = '_';
+                $this->{$field}[$host]    = $this->hosts['default'][$key];
             } else {
                 $message = '%1$s parameter is required by AvalancheImagineBundle; define either imagine.hosts.default.%1$s or imagine.hosts["%2$s"].%1$s';
                 throw new \InvalidArgumentException(sprintf($message, $key, $host));
@@ -185,10 +186,8 @@ class ParamResolver
             return $this->assetsHost;
         }
 
-        if ($this->packages) {
-            $host = parse_url($this->packages->getUrl(''), PHP_URL_HOST);
-        } elseif ($this->assets) {
-            $host = parse_url($this->assets->getUrl(''), PHP_URL_HOST);
+        if ($this->packages && $host = parse_url($this->packages->getUrl(''), PHP_URL_HOST)) {
+        } elseif ($this->assets && $host = parse_url($this->assets->getUrl(''), PHP_URL_HOST)) {
         } elseif ($this->context) {
             $host = $this->context->getHost();
         } else {
