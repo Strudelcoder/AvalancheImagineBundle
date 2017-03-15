@@ -186,10 +186,8 @@ class ParamResolver
             return $this->assetsHost;
         }
 
-        if ($this->packages) {
-            $host = parse_url($this->packages->getUrl(''), PHP_URL_HOST);
-        } elseif ($this->assets) {
-            $host = parse_url($this->assets->getUrl(''), PHP_URL_HOST);
+        if ($this->packages && $host = parse_url($this->packages->getUrl(''), PHP_URL_HOST)) {
+        } elseif ($this->assets && $host = parse_url($this->assets->getUrl(''), PHP_URL_HOST)) {
         } elseif ($this->context) {
             $host = $this->context->getHost();
         } else {
